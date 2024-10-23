@@ -16,7 +16,7 @@ export { docsGen }
 
 // docsList will be an array of objects with options
 // the toc is only used for files type inputStructure
-function docsGen(docsList, tocData) {
+function docsGen(docsList) {
 
     docsList = docsListPrep(docsList)
 
@@ -30,9 +30,9 @@ function docsGen(docsList, tocData) {
 
         // fullfiles and filesfiles share similar logic so are in same function
         if (filesStructure.includes(docsDir.inputStructure)) {
-            if (docsDir.inputStructure === "fullfiles") { renderFullFiles(docsDir, tocData) }
-            else if (docsDir.inputStructure === "subfiles") { renderSubFiles(docsDir, tocData) }
-            else if (docsDir.inputStructure === "filesfiles") { renderFullFiles(docsDir, tocData) }
+            if (docsDir.inputStructure === "fullfiles") { renderFullFiles(docsDir) }
+            else if (docsDir.inputStructure === "subfiles") { renderSubFiles(docsDir) }
+            else if (docsDir.inputStructure === "filesfiles") { renderFullFiles(docsDir) }
         }
 
 

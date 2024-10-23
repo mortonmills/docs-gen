@@ -1,7 +1,31 @@
 # docs-gen
 
 The docs-gen repo is a document generator which uses nodejs to arrange files 
-and pandoc to generate them.
+and pandoc to generate/render them.
+
+
+The entry point is passing an **Array of options** called a docsList to the docsGen function.
+
+the docsGen function follows this sequence
+- setup options
+- prep defaults
+- inputStructure sort
+- convert filepaths to absolute paths
+- filter out non-existent paths
+- render with pandoc
+
+
+Options are primarily an input and output
+- folder
+- filename
+- file extension
+
+The other options are
+- recursive
+
+
+
+## Input Structure
 
 There are 2 ways to generate docs
 - folder/directory
@@ -16,6 +40,7 @@ There are 2 ways to generate docs
 
 
 A path to a folder can be given and files within that folder will be converted.
+A list of files can also been given, either as an array or object (also called the **"toc"**)
 There are 3 ways to structure the output.
 - full - the entire folder will be one document
 - sub dir - each sub folder will be one document including the top level folder
@@ -32,7 +57,6 @@ There are 3 ways to structure the output.
 ## Options
 
 Book Options have several keys
-***at least 1 of 3 inputs are required for output*** 
 - inputFolder: String containing fullpath of input folder, folder is source material docs generated
 - inputFiles: Array[] containing Strings containing a path or paths, 
   - can be used in conjuction with inputFolder, as a parent path for paths specified
@@ -54,10 +78,9 @@ Book Options have several keys
 
     pandoc: {
         inputFolder: `${homedir()}/Documents/repo-books/pandoc-main`,
-        inputStructure: "custom",
+        inputStructure: "full",
         inputType: [".md", ".txt"],
         recursive: true,
-        toc: "pandoc",
         inputFiles: ["filepath1\nfilepath2\nfilepath3\nfilepath4"]
 
         preset: "embed",
@@ -67,88 +90,59 @@ Book Options have several keys
     }
 ```
 
-
+Both Input and Out follow the format of {Folder}/{File}.{Ext}
 | Column1    | inputFolder | inputExtensions | recursive | inputFiles | outputFolder | outputFileName | outputExtensions | preset |
 | ---------- | :---------: | :-------------: | :-------: | :--------: | :----------: | :------------: | :--------------: | :----: |
 | type       |     ""      |      []""       |   bool    |    []""    |      ""      |       ""       |        ""        |   ""   |
 |            |             |                 |           |            |              |                |                  |        |
-| fulldir    |      x      |       xd        |     ?     |            |      x       |       x        |        x         |   x    |
-| subdir     |      x      |       xd        |     ?     |            |      x       |       x        |        x         |   x    |
-| filesdir   |      x      |       xd        |     ?     |            |      x       |       x        |        x         |   x    |
+| fulldir    |      x      |        x        |     x     |            |      x       |       x        |        x         |   x    |
+| subdir     |      x      |        x        |     x     |            |      x       |       x        |        x         |   x    |
+| filesdir   |      x      |        x        |     x     |            |      x       |       x        |        x         |   x    |
 |            |             |                 |           |            |              |                |                  |        |
 | fullfiles  |      x      |                 |           |     x      |      x       |       x        |        x         |   x    |
 | subfiles   |      x      |                 |           |     x      |      x       |       x        |        x         |   x    |
 | filesfiles |      x      |                 |           |     x      |      x       |       x        |        x         |   x    |
 
 
-Both Input and Out follow the format of {Folder}/{File}.{Ext}
+
 Build up the docsList before passing into  
 
-toc should be an {}
-with keys as chapter name
-and values as filenames
-
-inputFolder will contain folder name, can setup toc differently but this easiest to adjust
-
-
-- setup options
-- prep defaults
-- inputStructure sort
-- convert filepaths to absolute paths
-- filter out non-existent paths
-- render with pandoc
-
-## ToC
-
-The Table of Contents should include the path top level folder/dir.
-Example pandoc/
 
 ## Full Path
 
-However paths are specified, they will be converted to absolute paths.
+If using an object,
+your keys should represent chapters or sections within your custom files output.
 
-If the inpuStructure is for folders/directories,
-then the inputFolder will determine the absolute path.
+The folder name should be the top level of your inputStructure.
 
-If the inputStructure is for files, 
-then either a **toc (Table Of Contents)** 
-or an **array of strings that are a path or list of paths**.
-The toc is an object with keys as **sub-groupings or chapters**
-and values as a **string that is a path or list of paths**
-```javascript
-// toc is
-{
-manual: `
-filepath1
-filepath2
-`,
+```
+foldername
+/home/pandoc
 
-docs: `
-filepath1
-filepath2
-filepath3
-filepath4
-`,
-}
+files
+docs/docs.md
+src/src.js
 
-// and an array of strings is
-[
-`
-filepath1
-filepath2
-filepath3
-filepath4
-`
-]
+```
+
+alternatively can be
+
+
+```
+foldername
+/home
+
+files
+pandoc/docs/docs.md
+pandoc/src/src.js
+
+node/docs/docs.md
+node/src/src.js
+
 ```
 
 
-## Output
-
-Documents will have 3 forms of output
-- folder
-- filename
-- file extension
+## Output Name
 
 The **folder** and **file extension** are specified in options.
 The filename is also specified but depending on the inputStructure, the filename may be different.

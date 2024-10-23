@@ -1,5 +1,6 @@
 
 import { homedir } from 'node:os';
+import { tocData } from "./data/toc-data.mjs";
 
 
 export { bookList }
@@ -8,7 +9,7 @@ export { bookList }
 
 let bookList = {
     urlTest: {
-        toc: "testUrls",
+        inputFiles: tocData["testUrls"],
         inputStructure: "customUrls",
 
         preset: "web",
@@ -21,6 +22,7 @@ let bookList = {
 
     pandoc: {
         inputFolder: `${homedir()}/Documents/repo-books/pandoc-main`,
+        inputFiles: tocData["pandoc"],
         inputStructure: "custom",
         inputType: [".md", ".txt"],
         recursive: true,
@@ -29,12 +31,12 @@ let bookList = {
         outputFolder: `${homedir()}/Documents/dist-books/pandoc-main2`,
         outputFileName: "pandoc",
         outputType: "html",
-        toc: "pandoc",
     },
 
 
     craftInt: {
         inputFolder: `${homedir()}/Documents/repo-books/craftinginterpreters-master/site`,
+        inputFiles: tocData["crafting-interpreters"],
         inputStructure: "custom",
         inputType: [".html"],
         recursive: false,
@@ -43,12 +45,12 @@ let bookList = {
         outputFolder: `${homedir()}/Documents/dist-books/crafting-interpreters-site`,
         outputFileName: "craft-int",
         outputType: "html",
-        toc: "crafting-interpreters",
     },
 
 
     defSrc: {
         inputFolder: `${homedir()}/def/packages/def-compiler/src`,
+        // inputFiles: tocData["def"],
         inputStructure: "subdir",
         inputType: [".js"],
         recursive: true,
@@ -57,12 +59,12 @@ let bookList = {
         outputFolder: `${homedir()}/Documents/dist-books/fed-src2`,
         outputFileName: "fed",
         outputType: "html",
-        // toc: "def",
     },
 
 
     defDocs: {
         inputFolder: `${homedir()}/def/packages/docs`,
+        // inputFiles: tocData["def"],
         inputStructure: "subdir",
         inputType: [".md"],
         recursive: true,
@@ -71,7 +73,6 @@ let bookList = {
         outputFolder: `${homedir()}/Documents/dist-books/test-docs`,
         outputFileName: "fed",
         outputType: "html",
-        // toc: "def",
     },
 
 }

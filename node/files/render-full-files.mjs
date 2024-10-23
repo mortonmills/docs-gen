@@ -56,7 +56,9 @@ function genInputFileNames(docsDir) {
         inputFileNames = []
         for (const key in toc) {
             const value = toc[key];
-            inputFileNames.push(convertToFullPath(value, docsDir))
+
+            let fileNames = convertToFullPath(value, docsDir)
+            inputFileNames.push(fileNames)
         }
 
     }

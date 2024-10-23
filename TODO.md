@@ -1,15 +1,17 @@
 
 
-add to and from for options
-how to use urls with files inputStructure 
+setup pandoc preset and docsList
 
-options to be arrays
+add to and from for options
+
 list resource path as array and convert for pandoc
 
 test all inputStructures 
 test install of repo as package
 
 TODO LOW PRIORITY
+
+how to use urls with files inputStructure 
 
 destructure prep
 
