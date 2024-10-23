@@ -1,34 +1,44 @@
-import { spawnSync } from "node:child_process"
-
-import { readdirSync, mkdirSync, existsSync } from 'node:fs';
-import { homedir } from 'node:os';
-import path from 'node:path';
 
 import { URL } from 'node:url';
+import { isObject, pandocRender, filterFileNamesExist, convertToFullPath } from "../docs-list-util.mjs"
+export { renderFullFiles }
 
-import { optionsArray } from '../../data/pandoc-data.mjs';
-import { isObject, pandocRender } from "../docs-list-util.mjs"
-export { renderFullFiles, genInputFileNames }
 
+// this module contains rendering for both fullfiles and filesfiles
 
 function renderFullFiles(docsDir) {
 
-    // will prioritize using inputFiles before toc, if both are present
     let inputFileNames = genInputFileNames(docsDir)
 
 
-    if (docsDir.inputStructure === "filesfiles") { renderFilesFiles() }
-    else if (docsDir.inputStructure === "fullfiles") { renderFilesFiles() }
+    if (docsDir.inputStructure === "filesfiles") {
 
-    //                    /home/books-dist/ bookname.  html
-    let outputFileName = `${docsDir.outputFolder}/${docsDir.outputFileName}.${docsDir.outputType}`
+        inputFileNames.forEach(inputFileName => {
 
-    // pandoc cmdline
-    let listArgs = optionsArray(inputFileNames, docsDir, outputFileName)
+            // this renames the file for the outputFileName
+            let outputName = convertOutputFileName(inputFileName)
+            //                    /home/books-dist/ bookname.  html
+            let outputFileName = `${docsDir.outputFolder}/${outputName}.${docsDir.outputType}`
 
-    pandocRender(listArgs)
+            pandocRender(inputFileName, docsDir, outputFileName)
+
+        });
+
+    }
+    else if (docsDir.inputStructure === "fullfiles") {
+
+        //                    /home/books-dist/ bookname.  html
+        let outputFileName = `${docsDir.outputFolder}/${docsDir.outputFileName}.${docsDir.outputType}`
+
+        pandocRender(inputFileNames, docsDir, outputFileName)
+
+    }
+
 
 }
+
+
+
 
 
 function genInputFileNames(docsDir) {
@@ -37,17 +47,8 @@ function genInputFileNames(docsDir) {
     let inputFileNames;
 
     if (Array.isArray(docsDir.inputFiles)) {
-
         // convert strings of filepaths into arrays 
-        inputFileNames = docsDir.inputFiles.map(fileStrings => {
-            return fileStrings
-                .replace(/ +/g, "")
-                .split(/\n+/)
-                .filter(x => x)
-                // create fullpath here, if inputFolder is present, join both as fullpath
-                .map(filepath => path.join(docsDir.inputFolder ? (docsDir.inputFolder, filepath) : filepath))
-        })
-
+        inputFileNames = docsDir.inputFiles.map(fileStrings => convertToFullPath(fileStrings, docsDir))
     }
     else if (isObject(docsDir.inputFiles)) {
 
@@ -55,53 +56,35 @@ function genInputFileNames(docsDir) {
         inputFileNames = []
         for (const key in toc) {
             const value = toc[key];
-
-            // split the toc string of filepaths into an array of filepaths 
-            toc[key] = value
-                .replace(/ +/g, "")
-                .split(/\n+/)
-                .filter(x => x)
-
-            inputFileNames.push(toc[key])
+            inputFileNames.push(convertToFullPath(value, docsDir))
         }
 
     }
 
-
     // convert array of arrays to one array
     inputFileNames = inputFileNames.flat()
 
+    inputFileNames = filterFileNamesExist(inputFileNames)
 
     return inputFileNames
 
 }
 
 
+function convertOutputFileName(inputFileName) {
 
+    let testurl = new URL(`${inputFileName}`)
+    let pathName = testurl.pathname
+    // let parsedPath = path.parse(pathName)
+    let outputFileName = pathName.split("/").filter(el => el)
+    let nameIndex = outputFileName.length
+    outputFileName =
+        outputFileName[nameIndex - 2]
+            ? outputFileName[nameIndex - 2] + "-" + outputFileName[nameIndex - 1]
+            : outputFileName[nameIndex - 1]
+                .join("-")
 
-function renderFilesFiles(docsDir) {
+    return outputFileName
 
-    inputFileNames.forEach(fileName => {
-
-        let testurl = new URL(`${fileName}`)
-        let pathName = testurl.pathname
-        // let parsedPath = path.parse(pathName)
-        let bookName = pathName.split("/").filter(el => el)
-        let nameIndex = bookName.length
-        bookName =
-            bookName[nameIndex - 2]
-                ? bookName[nameIndex - 2] + "-" + bookName[nameIndex - 1]
-                : bookName[nameIndex - 1]
-                    .join("-")
-
-        //                    /home/books-dist/ bookname.  html
-        let outputFileName = `${docsDir.outputFolder}/${bookName}.${docsDir.outputType}`
-
-        // pandoc cmdline
-        let listArgs = optionsArray(fileName, docsDir, outputFileName)
-
-        pandocRender(listArgs)
-
-    });
 
 }

@@ -76,9 +76,9 @@ Book Options have several keys
 | subdir     |      x      |       xd        |     ?     |            |       |      x       |       x        |        x         |   x    |
 | filesdir   |      x      |       xd        |     ?     |            |       |      x       |       x        |        x         |   x    |
 |            |             |                 |           |            |       |              |                |                  |        |
-| fullfiles  |      ?      |                 |           |     x?     |  x?   |      x       |       x        |        x         |   x    |
-| subfiles   |      ?      |                 |           |     x?     |  x?   |      x       |       x        |        x         |   x    |
-| filesfiles |      ?      |                 |           |     x?     |  x?   |      x       |       x        |        x         |   x    |
+| fullfiles  |      x      |                 |           |     x      |  x?   |      x       |       x        |        x         |   x    |
+| subfiles   |      x      |                 |           |     x      |  x?   |      x       |       x        |        x         |   x    |
+| filesfiles |      x      |                 |           |     x      |  x?   |      x       |       x        |        x         |   x    |
 
 
 Both Input and Out follow the format of {Folder}/{File}.{Ext}
@@ -87,6 +87,16 @@ Build up the docsList before passing into
 toc should be an {}
 with keys as chapter name
 and values as filenames
+
+inputFolder will contain folder name, can setup toc differently but this easiest to adjust
+
+
+- setup options
+- prep defaults
+- inputStructure sort
+- convert filepaths to absolute paths
+- filter out non-existent paths
+- render with pandoc
 
 ## ToC
 

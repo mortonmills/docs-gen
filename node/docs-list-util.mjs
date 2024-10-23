@@ -2,7 +2,14 @@
 import { readdirSync, mkdirSync, existsSync } from 'node:fs';
 import path from 'node:path';
 
-export { docsListPrep, showDirFilesList, isObject, pandocRender }
+export {
+    docsListPrep,
+    showDirFilesList,
+    isObject,
+    pandocRender,
+    filterFileNamesExist,
+    convertToFullPath,
+}
 
 
 function docsListPrep(docsList) {
@@ -14,7 +21,8 @@ function docsListPrep(docsList) {
 
         let docsDir = structuredClone(oldDocsDir)
 
-
+        let filesStructure = ["fullfiles", "subfiles", "filesfiles",]
+        let folderStructure = ["fulldir", "subdir", "filesdir",]
         // let r = {
         //     inputFolder: `${homedir()}/Documents/repo-books/pandoc-main`,
         //     inputStructure: "custom",
@@ -35,6 +43,8 @@ function docsListPrep(docsList) {
             continue
         }
 
+        // inputFolder is required, error
+        docsDir.inputFolder = docsDir.inputFiles ?? undefined
 
 
 
@@ -43,6 +53,12 @@ function docsListPrep(docsList) {
         if (docsDir.inputFolder === undefined) { throw new Error(`An "inputFolder" value is required.`) }
         // fullpath is needed for other functions, subDir needs for treating top level dir as subdir 
         docsDir.fullPath = docsDir.inputFolder
+
+        if (filesStructure.includes(docsDir.inputStructure)
+            && (docsDir.inputFolder === undefined || docsDir.inputFiles === undefined)) {
+            throw new Error(`An "inputFolder" value is required.`)
+        }
+
 
         // if "custom" but no "toc" key given, throw error
         docsDir.toc = docsDir.toc ?? undefined
@@ -158,7 +174,17 @@ function isObject(obj) {
 
 
 
-function pandocRender(listArgs){
+
+
+
+import { spawnSync } from "node:child_process"
+import { optionsArray } from '../../data/pandoc-data.mjs';
+
+function pandocRender(inputFileNames, docsDir, outputFileName) {
+
+    // pandoc cmdline
+    let listArgs = optionsArray(inputFileNames, docsDir, outputFileName)
+
 
     let soxMergeTrackVoices = spawnSync("pandoc", listArgs)
     if (soxMergeTrackVoices.stderr.length !== 0) {
@@ -167,4 +193,32 @@ function pandocRender(listArgs){
 
 
 
+}
+
+
+
+
+function filterFileNamesExist(inputFileNames) {
+
+    // filters out non-existent filepaths
+    inputFileNames = inputFileNames.filter(filepath => {
+        let filePathExists = fs.existsSync(filepath)
+        if (filePathExists === false) { console.warn(`File "${filepath}" not found. No output.`) }
+        return filePathExists
+    })
+
+
+    return inputFileNames
+}
+
+
+
+
+function convertToFullPath(fileStrings, docsDir) {
+    return fileStrings
+        .replace(/ +/g, "")
+        .split(/\n+/)
+        .filter(x => x)
+        // create fullpath here, if inputFolder is present, join both as fullpath
+        .map(filepath => path.join(docsDir.inputFolder, filepath))
 }

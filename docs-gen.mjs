@@ -1,5 +1,5 @@
 
-import { readdirSync, mkdirSync, existsSync } from 'node:fs';
+import { readdirSync } from 'node:fs';
 
 import path from 'node:path';
 
@@ -11,7 +11,6 @@ import { renderFilesDir } from "./node/folder/render-files-dir.mjs"
 
 import { renderSubFiles } from "./node/files/render-sub-files.mjs"
 import { renderFullFiles } from "./node/files/render-full-files``.mjs"
-import { renderFilesFiles } from "./node/files/render-files-files.mjs"
 
 export { docsGen }
 
@@ -23,17 +22,19 @@ function docsGen(docsList, tocData) {
 
     // this is for gathering the tocData not used in main function
     // showDirFilesList(docsList)
-    let filesStructure = ["fullfiles", "subfiles", "filesfiles",]
-    let folderStructure = ["fulldir", "subdir", "filesdir",]
+
 
     // next stage is to render according to options in docsList docsDir
+    let filesStructure = ["fullfiles", "subfiles", "filesfiles",]
+    let folderStructure = ["fulldir", "subdir", "filesdir",]
     for (const docsDir of docsList) {
 
 
+        // fullfiles and filesfiles share similar logic so are in same function
         if (filesStructure.includes(docsDir.inputStructure)) {
             if (docsDir.inputStructure === "fullfiles") { renderFullFiles(docsDir, tocData) }
             else if (docsDir.inputStructure === "subfiles") { renderSubFiles(docsDir, tocData) }
-            else if (docsDir.inputStructure === "filesfiles") { renderFilesFiles(docsDir, tocData) }
+            else if (docsDir.inputStructure === "filesfiles") { renderFullFiles(docsDir, tocData) }
         }
 
 
