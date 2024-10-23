@@ -1,6 +1,7 @@
 import { spawnSync } from "node:child_process"
 
 import { readdirSync, mkdirSync, existsSync } from 'node:fs';
+import fs from 'node:fs';
 import { homedir } from 'node:os';
 import path from 'node:path';
 
@@ -8,10 +9,10 @@ import { URL } from 'node:url';
 
 import { optionsArray } from '../../data/pandoc-data.mjs';
 
-export { renderCustomUrls }
+export { renderSubFiles }
 
 
-function renderCustomUrls(docsDir, tocData) {
+function renderSubFiles(docsDir, tocData) {
 
     // returns an object,
     // key is a bookname
@@ -21,6 +22,8 @@ function renderCustomUrls(docsDir, tocData) {
     // files are then merged into a book representing key name 
     let toc = tocData[docsDir.toc]
 
+    // these contain options in the pandoc cmdline
+    let bookName = docsDir.outputFileName
 
     for (const key in toc) {
         const value = toc[key];
@@ -30,10 +33,15 @@ function renderCustomUrls(docsDir, tocData) {
             .replace(/ +/g, "")
             .split(/\n+/)
             .filter(x => x)
+            // create fullpath here
+            .map(filepath => path.join(docsDir.inputFolder, filepath))
 
-
-        // these contain options in the pandoc cmdline
-        let bookName = docsDir.outputFileName
+        // filters out non-existent filepaths
+        toc[key] = toc[key].filter(filepath => {
+            let filePathExists = fs.existsSync(filepath)
+            if (filePathExists === false) { console.warn(`File "${filepath}" not found. No output.`) }
+            return filePathExists
+        })
 
 
         // setup key specific options here
@@ -50,8 +58,15 @@ function renderCustomUrls(docsDir, tocData) {
             console.log(`soxMergeTrackVoices:`, `${soxMergeTrackVoices.stderr}`)
         }
 
+
     }
 
+    // sdfg.filter(x => x.length > 0)
+
+
+    // console.log("toc:", toc)
+    // throw new Error("dfsg")
 
 
 }
+

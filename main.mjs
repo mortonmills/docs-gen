@@ -30,6 +30,14 @@ let docsList;
 
 // }
 
+// test inputFiles
+[
+    tocData["espeak"]["main"], 
+    tocData["espeak"]["phonemes"], 
+    tocData["espeak"]["languages"],
+]
+
+
 // convert keys into objects mapped to an array
 docsList = [
     // "pandoc", 

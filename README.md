@@ -1,5 +1,5 @@
 # docs-gen
-The docs-gen repo is document generator which uses nodejs to arrange files 
+The docs-gen repo is a document generator which uses nodejs to arrange files 
 and pandoc to generate them.
 
 There are 2 ways to generate docs
@@ -14,13 +14,16 @@ There are 2 ways to generate docs
 | files |        |       |
 
 
-A path to a folder can be given and the files within that folder will be converted.
+A path to a folder can be given and files within that folder will be converted.
 There are 3 ways to structure the output.
 - full - the entire folder will be one document
 - sub dir - each sub folder will be one document including the top level folder
 - files - each file will be one document
 
-Book Options requires several keys
+## Options
+
+Book Options have several keys
+***at least 1 of 3 inputs are required for output*** 
 - inputFolder: String containing fullpath of input folder, folder is source material docs generated
 - inputFiles: Array[] containing Strings containing a path or paths, 
   - can be used in conjuction with inputFolder, as a parent path for paths specified
@@ -53,3 +56,57 @@ Book Options requires several keys
         toc: "pandoc",
     }
 ```
+
+## Full Path
+
+However paths are specified, they will be converted to absolute paths.
+
+If the inpuStructure is for folders/directories,
+then the inputFolder will determine the absolute path.
+
+If the inputStructure is for files, 
+then either a **toc (Table Of Contents)** 
+or an **array of strings that are a path or list of paths**.
+The toc is an object with keys as **sub-groupings or chapters**
+and values as a **string that is a path or list of paths**
+```javascript
+// toc is
+{
+manual: `
+filepath1
+filepath2
+`,
+
+docs: `
+filepath1
+filepath2
+filepath3
+filepath4
+`,
+}
+
+// and an array of strings is
+[
+`
+filepath1
+filepath2
+filepath3
+filepath4
+`
+]
+```
+
+
+## Output
+
+Documents will have 3 forms of output
+- folder
+- filename
+- file extension
+
+The **folder** and **file extension** are specified in options.
+The filename is also specified but depending on the inputStructure, the filename may be different.
+
+For full, the filename will be used.
+For sub, the filename + subname will be used.
+For files, the path will split and will joined with `-` as the filename

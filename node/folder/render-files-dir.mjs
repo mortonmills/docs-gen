@@ -9,10 +9,10 @@ import { URL } from 'node:url';
 import { tocData } from '../../data/toc-data.mjs';
 import { optionsArray } from '../../data/pandoc-data.mjs';
 
-export { renderFiles }
+export { renderFilesDir }
 
 
-function renderFiles(docsDir, docsDirContents) {
+function renderFilesDir(docsDir, docsDirContents) {
 
 
 

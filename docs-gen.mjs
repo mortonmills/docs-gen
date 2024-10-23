@@ -7,11 +7,11 @@ import { docsListPrep } from "./node/docs-list-prep.mjs"
 
 import { renderFullDir } from "./node/folder/render-full-dir.mjs"
 import { renderSubDir } from "./node/folder/render-sub-dir.mjs"
-import { renderFiles } from "./node/folder/render-files.mjs"
+import { renderFilesDir } from "./node/folder/render-files-dir.mjs"
 
-import { renderCustom } from "./node/files/render-custom.mjs"
-import { renderCustomUrls } from "./node/files/render-custom-urls.mjs"
-import { renderUrls } from "./node/files/render-urls.mjs"
+import { renderSubFiles } from "./node/files/render-sub-files.mjs"
+import { renderFullFiles } from "./node/files/render-full-files``.mjs"
+import { renderFilesFiles } from "./node/files/render-files-files.mjs"
 
 export { docsGen }
 
@@ -23,11 +23,15 @@ export { docsGen }
 //         remove.recursive watch save process create write stream and stat 
 
 
-// docsList willbe an array of objects with options
-// the toc is only required for custom and urls inputStructure
+// docsList will be an array of objects with options
+// the toc is only use for files type inputStructure
 function docsGen(docsList, tocData) {
 
     docsList = docsListPrep(docsList)
+
+    // this is for gathering the tocData not used in main function
+    // showDirFilesList(docsList)
+
 
     // next stage is to render according to options in docsList docsDir
     for (const docsDir of docsList) {
@@ -39,44 +43,22 @@ function docsGen(docsList, tocData) {
             recursive: docsDir.recursive,
         }
 
-
-
         // renders files from multiple sources, skips bottom section since inputFolders are used
-        if (docsDir.inputStructure === "customUrls") { renderCustomUrls(docsDir, tocData); continue }
-        else if (docsDir.inputStructure === "urls") { renderUrls(docsDir, tocData); continue }
-
-
-
-
-
-
+        if (docsDir.inputStructure === "fullfiles") { renderFullFiles(docsDir, tocData); continue }
+        else if (docsDir.inputStructure === "subfiles") { renderSubFiles(docsDir, tocData); continue }
+        else if (docsDir.inputStructure === "filesfiles") { renderFilesFiles(docsDir, tocData); continue }
 
         // gets all contents in current dir
         let docsDirContents = readdirSync(docsDir.inputFolder, options)
         // sets up full paths, needed for generating file and dir books 
         docsDirContents.forEach(file => file.fullPath = path.join(file.parentPath, file.name))
 
-        // // this is for gathering the tocData not used in main function
-        // console.log(
-        //     docsDirContents
-        // )
-        // console.log(
-        //     docsDirContents
-        //         .filter(content => content.isFile() && docsDir.inputType.includes(path.extname(content.name)))
-        //         .map(file => path.join(file.parentPath, file.name))
-        //         .join("\n")
-        // )
-
-        // throw new Error("dfsg")
-
-        // render as BookCustom
-        if (docsDir.inputStructure === "custom") { renderCustom(docsDir, docsDirContents, tocData) }
         // render entire directory as Book
-        else if (docsDir.inputStructure === "full") { renderFullDir(docsDir, docsDirContents) }
+        if (docsDir.inputStructure === "fulldir") { renderFullDir(docsDir, docsDirContents) }
         // for book per sub dir
         else if (docsDir.inputStructure === "subdir") { renderSubDir(docsDir, docsDirContents) }
         // renders a book for each file in the docsDir
-        else if (docsDir.inputStructure === "files") { renderFiles(docsDir, docsDirContents) }
+        else if (docsDir.inputStructure === "filesdir") { renderFilesDir(docsDir, docsDirContents) }
     }
 
 

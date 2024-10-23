@@ -2,7 +2,7 @@
 import { readdirSync, mkdirSync, existsSync } from 'node:fs';
 import path from 'node:path';
 
-export { docsListPrep }
+export { docsListPrep, showDirFilesList }
 
 
 function docsListPrep(docsList) {
@@ -90,5 +90,45 @@ function docsListPrep(docsList) {
     })
 
     return docsList
+
+}
+
+
+
+
+function showDirFilesList(docsList) {
+
+
+    for (const docsDir of docsList) {
+
+        let options = {
+            // creates dirEnt from node readDirSync
+            withFileTypes: true,
+            // set with the docsList options array  
+            recursive: docsDir.recursive,
+        }
+
+
+        // this is for gathering the tocData not used in main function
+        // gets all contents in current dir
+        let docsDirContents = readdirSync(docsDir.inputFolder, options)
+        // sets up full paths, needed for generating file and dir books 
+        docsDirContents.forEach(file => file.fullPath = path.join(file.parentPath, file.name))
+
+        // console.log(
+        //     docsDirContents
+        // )
+
+        console.log(
+            docsDirContents
+                .filter(content => content.isFile() && docsDir.inputType.includes(path.extname(content.name)))
+                .map(file => path.join(file.parentPath, file.name))
+                .join("\n")
+        )
+
+    }
+
+    throw new Error("dfsg")
+
 
 }
