@@ -2,7 +2,7 @@
 import { readdirSync, mkdirSync, existsSync } from 'node:fs';
 import path from 'node:path';
 
-export { docsListPrep, showDirFilesList }
+export { docsListPrep, showDirFilesList, isObject, pandocRender }
 
 
 function docsListPrep(docsList) {
@@ -14,6 +14,20 @@ function docsListPrep(docsList) {
 
         let docsDir = structuredClone(oldDocsDir)
 
+
+        // let r = {
+        //     inputFolder: `${homedir()}/Documents/repo-books/pandoc-main`,
+        //     inputStructure: "custom",
+        //     inputType: [".md", ".txt"],
+        //     recursive: true,
+
+        //     preset: "embed",
+        //     outputFolder: `${homedir()}/Documents/dist-books/pandoc-main2`,
+        //     outputFileName: "pandoc",
+        //     outputType: "html",
+        //     toc: "pandoc",
+
+        // }
 
         // for generating docs form multiple sources, "urls" does not follow same output as other options
         if (docsDir.inputStructure === "customUrls" || docsDir.inputStructure === "urls") {
@@ -129,6 +143,28 @@ function showDirFilesList(docsList) {
     }
 
     throw new Error("dfsg")
+
+
+}
+
+
+
+
+function isObject(obj) {
+    return typeof obj === "object"
+        && obj !== null
+        && !Array.isArray(obj)
+}
+
+
+
+function pandocRender(listArgs){
+
+    let soxMergeTrackVoices = spawnSync("pandoc", listArgs)
+    if (soxMergeTrackVoices.stderr.length !== 0) {
+        console.log(`soxMergeTrackVoices:`, `${soxMergeTrackVoices.stderr}`)
+    }
+
 
 
 }

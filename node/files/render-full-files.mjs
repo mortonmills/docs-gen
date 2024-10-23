@@ -7,15 +7,36 @@ import path from 'node:path';
 import { URL } from 'node:url';
 
 import { optionsArray } from '../../data/pandoc-data.mjs';
+import { isObject, pandocRender } from "../docs-list-util.mjs"
+export { renderFullFiles, genInputFileNames }
 
-export { renderFullFiles }
 
-
-function renderFullFiles(docsDir, tocData) {
+function renderFullFiles(docsDir) {
 
     // will prioritize using inputFiles before toc, if both are present
+    let inputFileNames = genInputFileNames(docsDir)
+
+
+    if (docsDir.inputStructure === "filesfiles") { renderFilesFiles() }
+    else if (docsDir.inputStructure === "fullfiles") { renderFilesFiles() }
+
+    //                    /home/books-dist/ bookname.  html
+    let outputFileName = `${docsDir.outputFolder}/${docsDir.outputFileName}.${docsDir.outputType}`
+
+    // pandoc cmdline
+    let listArgs = optionsArray(inputFileNames, docsDir, outputFileName)
+
+    pandocRender(listArgs)
+
+}
+
+
+function genInputFileNames(docsDir) {
+
+
     let inputFileNames;
-    if (docsDir.inputFiles) {
+
+    if (Array.isArray(docsDir.inputFiles)) {
 
         // convert strings of filepaths into arrays 
         inputFileNames = docsDir.inputFiles.map(fileStrings => {
@@ -27,11 +48,10 @@ function renderFullFiles(docsDir, tocData) {
                 .map(filepath => path.join(docsDir.inputFolder ? (docsDir.inputFolder, filepath) : filepath))
         })
 
-        // convert array of arrays to one array
-        inputFileNames = inputFileNames.flat()
     }
-    else {
-        let toc = tocData[docsDir.toc]
+    else if (isObject(docsDir.inputFiles)) {
+
+        let toc = docsDir.inputFiles
         inputFileNames = []
         for (const key in toc) {
             const value = toc[key];
@@ -45,25 +65,43 @@ function renderFullFiles(docsDir, tocData) {
             inputFileNames.push(toc[key])
         }
 
-        inputFileNames = inputFileNames.flat()
     }
 
 
+    // convert array of arrays to one array
+    inputFileNames = inputFileNames.flat()
+
+
+    return inputFileNames
+
+}
+
+
+
+
+function renderFilesFiles(docsDir) {
+
+    inputFileNames.forEach(fileName => {
+
+        let testurl = new URL(`${fileName}`)
+        let pathName = testurl.pathname
+        // let parsedPath = path.parse(pathName)
+        let bookName = pathName.split("/").filter(el => el)
+        let nameIndex = bookName.length
+        bookName =
+            bookName[nameIndex - 2]
+                ? bookName[nameIndex - 2] + "-" + bookName[nameIndex - 1]
+                : bookName[nameIndex - 1]
+                    .join("-")
+
         //                    /home/books-dist/ bookname.  html
-        let outputFileName = `${docsDir.outputFolder}/${docsDir.outputFileName}.${docsDir.outputType}`
+        let outputFileName = `${docsDir.outputFolder}/${bookName}.${docsDir.outputType}`
 
         // pandoc cmdline
-        let listArgs = optionsArray(inputFileNames, docsDir, outputFileName)
+        let listArgs = optionsArray(fileName, docsDir, outputFileName)
 
+        pandocRender(listArgs)
 
-        let soxMergeTrackVoices = spawnSync("pandoc", listArgs)
-        if (soxMergeTrackVoices.stderr.length !== 0) {
-            console.log(`soxMergeTrackVoices:`, `${soxMergeTrackVoices.stderr}`)
-        }
-
-
-
-
-
+    });
 
 }

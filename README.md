@@ -1,4 +1,5 @@
 # docs-gen
+
 The docs-gen repo is a document generator which uses nodejs to arrange files 
 and pandoc to generate them.
 
@@ -19,6 +20,14 @@ There are 3 ways to structure the output.
 - full - the entire folder will be one document
 - sub dir - each sub folder will be one document including the top level folder
 - files - each file will be one document
+
+// node api
+//     os freemem totalmem homedir userinfo tmpdir
+//     path use dirname
+//     process.env memusage resource usage and uptime
+//     fs.glob mkdir.recursive readdir realpath 
+//         remove.recursive watch save process create write stream and stat 
+
 
 ## Options
 
@@ -48,14 +57,41 @@ Book Options have several keys
         inputStructure: "custom",
         inputType: [".md", ".txt"],
         recursive: true,
+        toc: "pandoc",
+        inputFiles: ["filepath1\nfilepath2\nfilepath3\nfilepath4"]
 
         preset: "embed",
         outputFolder: `${homedir()}/Documents/dist-books/pandoc-main2`,
         outputFileName: "pandoc",
         outputType: "html",
-        toc: "pandoc",
     }
 ```
+
+
+| Column1    | inputFolder | inputExtensions | recursive | inputFiles |  ToC  | outputFolder | outputFileName | outputExtensions | preset |
+| ---------- | :---------: | :-------------: | :-------: | :--------: | :---: | :----------: | :------------: | :--------------: | :----: |
+| type       |     ""      |      []""       |   bool    |    []""    |  ""   |      ""      |       ""       |        ""        |   ""   |
+|            |             |                 |           |            |       |              |                |                  |        |
+| fulldir    |      x      |       xd        |     ?     |            |       |      x       |       x        |        x         |   x    |
+| subdir     |      x      |       xd        |     ?     |            |       |      x       |       x        |        x         |   x    |
+| filesdir   |      x      |       xd        |     ?     |            |       |      x       |       x        |        x         |   x    |
+|            |             |                 |           |            |       |              |                |                  |        |
+| fullfiles  |      ?      |                 |           |     x?     |  x?   |      x       |       x        |        x         |   x    |
+| subfiles   |      ?      |                 |           |     x?     |  x?   |      x       |       x        |        x         |   x    |
+| filesfiles |      ?      |                 |           |     x?     |  x?   |      x       |       x        |        x         |   x    |
+
+
+Both Input and Out follow the format of {Folder}/{File}.{Ext}
+Build up the docsList before passing into  
+
+toc should be an {}
+with keys as chapter name
+and values as filenames
+
+## ToC
+
+The Table of Contents should include the path top level folder/dir.
+Example pandoc/
 
 ## Full Path
 

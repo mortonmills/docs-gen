@@ -1,6 +1,10 @@
 
 destructure prep
 parallel parent paths 
+add to and from for options
+how to use urls with files inputStructure 
+2 different preparations
+change inputFilenames to inputFiles
 
 
 options to be arrays

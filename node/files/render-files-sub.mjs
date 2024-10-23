@@ -8,19 +8,16 @@ import path from 'node:path';
 import { URL } from 'node:url';
 
 import { optionsArray } from '../../data/pandoc-data.mjs';
+import { isObject } from "../docs-list-util.mjs"
 
 export { renderSubFiles }
 
 
-function renderSubFiles(docsDir, tocData) {
+function renderSubFiles(docsDir) {
 
-    // returns an object,
-    // key is a bookname
-    // value is a string, where each file of book is on a newline
-    // this string will be split into an array
-    // array will convert filenames into full filepath names 
-    // files are then merged into a book representing key name 
-    let toc = tocData[docsDir.toc]
+    if (isObject(docsDir.inputFiles) === false) { throw new Error("inputFiles must be an object.") }
+
+    let toc = docsDir.inputFiles
 
     // these contain options in the pandoc cmdline
     let bookName = docsDir.outputFileName
