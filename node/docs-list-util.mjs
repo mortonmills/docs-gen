@@ -4,6 +4,10 @@ import path from 'node:path';
 
 export {
     docsListPrep,
+    filesStructure,
+    folderStructure,
+    filterNoFolders,
+    createOutputFolders,
     showDirFilesList,
     isObject,
     pandocRender,
@@ -12,65 +16,53 @@ export {
 }
 
 
+let filesStructure = ["fullfiles", "subfiles", "filesfiles",]
+let folderStructure = ["fulldir", "subdir", "filesdir",]
+
+
 function docsListPrep(docsList) {
 
     // checks for required keys in docsList, 
     // supplies defaults if keys are missing
+
     let docsList2 = []
     for (const oldDocsDir of docsList) {
 
         let docsDir = structuredClone(oldDocsDir)
 
-        let filesStructure = ["fullfiles", "subfiles", "filesfiles",]
-        let folderStructure = ["fulldir", "subdir", "filesdir",]
-        // let r = {
-        //     inputFolder: `${homedir()}/Documents/repo-books/pandoc-main`,
-        //     inputStructure: "custom",
-        //     inputType: [".md", ".txt"],
-        //     recursive: true,
 
-        //     preset: "embed",
-        //     outputFolder: `${homedir()}/Documents/dist-books/pandoc-main2`,
-        //     outputFileName: "pandoc",
-        //     outputType: "html",
-        //     toc: "pandoc",
+        docsDir.inputFiles = docsDir.inputFiles ?? undefined
+        docsDir.inputFolder = docsDir.inputFolder ?? undefined
 
-        // }
+        if (filesStructure.includes(docsDir.inputStructure)) {
+            if (docsDir.inputFolder === undefined || docsDir.inputFiles === undefined) {
+                throw new Error(`An "inputFolder" and "inputFiles" value is required.`)
+            }
 
-        // for generating docs form multiple sources, "urls" does not follow same output as other options
-        if (docsDir.inputStructure === "customUrls" || docsDir.inputStructure === "urls") {
-            docsList2.push(docsDir)
-            continue
+            // inputStructure missing, then full
+            docsDir.inputStructure = docsDir.inputStructure ?? "fullfiles"
+
+
+        }
+        else if (folderStructure.includes(docsDir.inputStructure)) {
+            if (docsDir.inputFolder === undefined) {
+                throw new Error(`An "inputFolder" value is required.`)
+            }
+
+            // inputStructure missing, then full
+            docsDir.inputStructure = docsDir.inputStructure ?? "fulldir"
+
         }
 
-        // inputFolder is required, error
-        docsDir.inputFolder = docsDir.inputFiles ?? undefined
 
-
-
-        // inputFolder is required, error
-        docsDir.inputFolder = docsDir.inputFolder ?? undefined
-        if (docsDir.inputFolder === undefined) { throw new Error(`An "inputFolder" value is required.`) }
         // fullpath is needed for other functions, subDir needs for treating top level dir as subdir 
         docsDir.fullPath = docsDir.inputFolder
 
-        if (filesStructure.includes(docsDir.inputStructure)
-            && (docsDir.inputFolder === undefined || docsDir.inputFiles === undefined)) {
-            throw new Error(`An "inputFolder" value is required.`)
-        }
-
-
-        // if "custom" but no "toc" key given, throw error
-        docsDir.toc = docsDir.toc ?? undefined
-        if (docsDir.inputStructure === "custom" && docsDir.toc == undefined) { throw new Error(`A "toc" value is required for a "custom" inputStructure.`) }
 
         // recursive should be false
         docsDir.recursive = docsDir.recursive ?? false
-        // inputType missing, then all files types are used
+        // inputType missing,
         docsDir.inputType = docsDir.inputType ?? [".md"]
-        // inputStructure missing, then full
-        docsDir.inputStructure = docsDir.inputStructure ?? "full"
-
 
 
 
@@ -87,20 +79,19 @@ function docsListPrep(docsList) {
 
     }
 
+    docsList = filterNoFolders(docsList2)
+    createOutputFolders(docsList)
+
+    return docsList
+
+}
 
 
 
-
-
+function filterNoFolders(docsList) {
     // this checks to see if the inputFolder exists
     // filter any that do not
-    docsList = docsList2.filter(docsDir => {
-
-        // accounts for "inputStructure": "urls" which will not have an "inputFolder" 
-        if (docsDir.inputStructure === "customUrls"
-            || docsDir.inputStructure === "urls") {
-            return true
-        }
+    docsList = docsList.filter(docsDir => {
         // since using filter method, will return true, 
         // checks if path exists and is a directory
         // node documentation recommends trying to read then handling error,
@@ -109,6 +100,11 @@ function docsListPrep(docsList) {
         try { return readdirSync(docsDir.inputFolder) }
         catch { return false }
     })
+
+    return docsList
+}
+
+function createOutputFolders(docsList) {
 
     // for inputFolders that do not throw errors
     // create the outputFolders for those Books in docsList
@@ -119,10 +115,7 @@ function docsListPrep(docsList) {
         }
     })
 
-    return docsList
-
 }
-
 
 
 

@@ -68,17 +68,17 @@ Book Options have several keys
 ```
 
 
-| Column1    | inputFolder | inputExtensions | recursive | inputFiles |  ToC  | outputFolder | outputFileName | outputExtensions | preset |
-| ---------- | :---------: | :-------------: | :-------: | :--------: | :---: | :----------: | :------------: | :--------------: | :----: |
-| type       |     ""      |      []""       |   bool    |    []""    |  ""   |      ""      |       ""       |        ""        |   ""   |
-|            |             |                 |           |            |       |              |                |                  |        |
-| fulldir    |      x      |       xd        |     ?     |            |       |      x       |       x        |        x         |   x    |
-| subdir     |      x      |       xd        |     ?     |            |       |      x       |       x        |        x         |   x    |
-| filesdir   |      x      |       xd        |     ?     |            |       |      x       |       x        |        x         |   x    |
-|            |             |                 |           |            |       |              |                |                  |        |
-| fullfiles  |      x      |                 |           |     x      |  x?   |      x       |       x        |        x         |   x    |
-| subfiles   |      x      |                 |           |     x      |  x?   |      x       |       x        |        x         |   x    |
-| filesfiles |      x      |                 |           |     x      |  x?   |      x       |       x        |        x         |   x    |
+| Column1    | inputFolder | inputExtensions | recursive | inputFiles | outputFolder | outputFileName | outputExtensions | preset |
+| ---------- | :---------: | :-------------: | :-------: | :--------: | :----------: | :------------: | :--------------: | :----: |
+| type       |     ""      |      []""       |   bool    |    []""    |      ""      |       ""       |        ""        |   ""   |
+|            |             |                 |           |            |              |                |                  |        |
+| fulldir    |      x      |       xd        |     ?     |            |      x       |       x        |        x         |   x    |
+| subdir     |      x      |       xd        |     ?     |            |      x       |       x        |        x         |   x    |
+| filesdir   |      x      |       xd        |     ?     |            |      x       |       x        |        x         |   x    |
+|            |             |                 |           |            |              |                |                  |        |
+| fullfiles  |      x      |                 |           |     x      |      x       |       x        |        x         |   x    |
+| subfiles   |      x      |                 |           |     x      |      x       |       x        |        x         |   x    |
+| filesfiles |      x      |                 |           |     x      |      x       |       x        |        x         |   x    |
 
 
 Both Input and Out follow the format of {Folder}/{File}.{Ext}

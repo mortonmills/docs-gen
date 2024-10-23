@@ -3,7 +3,7 @@ import { readdirSync } from 'node:fs';
 
 import path from 'node:path';
 
-import { docsListPrep } from "./node/docs-list-util.mjs"
+import { docsListPrep, filesStructure, folderStructure } from "./node/docs-list-util.mjs"
 
 import { renderFullDir } from "./node/folder/render-full-dir.mjs"
 import { renderSubDir } from "./node/folder/render-sub-dir.mjs"
@@ -25,8 +25,6 @@ function docsGen(docsList, tocData) {
 
 
     // next stage is to render according to options in docsList docsDir
-    let filesStructure = ["fullfiles", "subfiles", "filesfiles",]
-    let folderStructure = ["fulldir", "subdir", "filesdir",]
     for (const docsDir of docsList) {
 
 
