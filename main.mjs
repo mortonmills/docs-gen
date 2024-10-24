@@ -1,6 +1,6 @@
 import { bookList } from "./data/docs-list.mjs"
 
-import { docsGen } from "./docs-gen.mjs";
+import { docsGen } from "./index.mjs";
 import { tocData } from "./data/toc-data.mjs";
 import { presets } from "./data/pandoc-data.mjs";
 

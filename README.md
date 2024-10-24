@@ -1,7 +1,7 @@
 # docs-gen
 
-The docs-gen repo is a document generator which uses nodejs to arrange files 
-and pandoc to generate/render them.
+The docs-gen repo is a document generator which uses nodejs to structure files 
+and pandoc to render them.
 
 
 The entry point is passing an **Array of options** called a docsList to the docsGen function.
