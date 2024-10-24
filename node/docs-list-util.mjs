@@ -10,7 +10,6 @@ export {
     createOutputFolders,
     showDirFilesList,
     isObject,
-    pandocRender,
     filterFileNamesExist,
     convertToFullPath,
 }
@@ -164,30 +163,6 @@ function isObject(obj) {
         && obj !== null
         && !Array.isArray(obj)
 }
-
-
-
-
-
-
-import { spawnSync } from "node:child_process"
-import { optionsArray } from '../../data/pandoc-data.mjs';
-
-function pandocRender(inputFileNames, docsDir, outputFileName) {
-
-    // pandoc cmdline
-    let listArgs = optionsArray(inputFileNames, docsDir, outputFileName)
-
-
-    let soxMergeTrackVoices = spawnSync("pandoc", listArgs)
-    if (soxMergeTrackVoices.stderr.length !== 0) {
-        console.log(`soxMergeTrackVoices:`, `${soxMergeTrackVoices.stderr}`)
-    }
-
-
-
-}
-
 
 
 

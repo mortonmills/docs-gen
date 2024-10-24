@@ -62,6 +62,9 @@ If the value of a key a is a function,
 then another object containing the inputFileNames, docsDir, and outfileName will passed to that function.
 Otherwise the value should be a String.
 
+Objects are useful when the value is not known and so a function can be used at runtime.
+File names in a directory can be used for the title of the document generated
+
 ## Structuring Options
 
 

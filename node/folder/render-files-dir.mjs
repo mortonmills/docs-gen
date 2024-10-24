@@ -1,5 +1,6 @@
 
 import path from 'node:path';
+import { pandocRender } from "../../pandoc/render-util.mjs"
 
 export { renderFilesDir }
 

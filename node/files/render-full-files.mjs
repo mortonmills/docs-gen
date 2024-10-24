@@ -1,6 +1,7 @@
 
 import { URL } from 'node:url';
-import { isObject, pandocRender, filterFileNamesExist, convertToFullPath } from "../docs-list-util.mjs"
+import { isObject, filterFileNamesExist, convertToFullPath } from "../docs-list-util.mjs"
+import { pandocRender } from "../../pandoc/render-util.mjs"
 export { renderFullFiles }
 
 
