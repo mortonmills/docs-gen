@@ -1,6 +1,6 @@
 
-import { isObject, pandocRender, filterFileNamesExist, convertToFullPath } from "../structure-util.mjs"
-import { pandocRender } from "../../pandoc/render-util.mjs"
+import { isObject, filterFileNamesExist, convertToFullPath } from "../structure-util.mjs"
+import { pandocRender } from "../../render/render-util.mjs"
 
 export { renderSubFiles }
 
