@@ -3,14 +3,14 @@ import { readdirSync } from 'node:fs';
 
 import path from 'node:path';
 
-import { docsListPrep, filesStructure, folderStructure } from "./node/docs-list-util.mjs"
+import { docsListPrep, filesStructure, folderStructure } from "./structure/docs-list-util.mjs"
 
-import { renderFullDir } from "./node/folder/full-folder.mjs"
-import { renderSubDir } from "./node/folder/sub-folder.mjs"
-import { renderFilesDir } from "./node/folder/files-folder.mjs"
+import { renderFullDir } from "./structure/folder/full-folder.mjs"
+import { renderSubDir } from "./structure/folder/sub-folder.mjs"
+import { renderFilesDir } from "./structure/folder/files-folder.mjs"
 
-import { renderSubFiles } from "./node/files/sub-files.mjs"
-import { renderFullFiles } from "./node/files/full-files``.mjs"
+import { renderSubFiles } from "./structure/files/sub-files.mjs"
+import { renderFullFiles } from "./structure/files/full-files``.mjs"
 
 export { docsGen }
 

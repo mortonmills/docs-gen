@@ -1,7 +1,7 @@
 
 import { readdirSync} from 'node:fs';
 import path from 'node:path';
-import { pandocRender } from "../../pandoc/render-util.mjs"
+import { pandocRender } from "../../render/render-util.mjs"
 
 
 export { renderSubDir }
