@@ -25,7 +25,13 @@ let presets = {
 --toc
 --embed-resources
 --no-highlight
---standalone`
+--standalone`,
+
+        {
+            readerHtml: pandocMap["readerHtml"],
+            title: pandocMap["title"],
+        }
+
     ],
     "craft-int": {
         toc: true,
@@ -52,7 +58,8 @@ let presets = {
         "embed-resources": false,
         "split-level": 2,
         standalone: true,
-        readerHtml: true,
+        readerHtml: pandocMap["readerHtml"],
+        title: pandocMap["title"],
     },
 }
 
@@ -98,11 +105,17 @@ function optionsArray(inputFileNames, docsDir, outputFileName) {
     let renderOptions = docsDir?.preset
     if (renderOptions) {
 
+        // arrays can have both strings and objects
         if (Array.isArray(renderOptions)) {
             pandocArray = renderOptions.map(optionString => {
+
+
                 optionString
                     .split(/\s+/)
                     .filter(x => x)
+
+
+
             })
 
         }
@@ -116,23 +129,24 @@ function optionsArray(inputFileNames, docsDir, outputFileName) {
                 // then push the string version to the options array   
                 // both arrays and strings are pushed and array will be flattened  
                 if (value) {
-                    if (typeof pandocMap[key] === "function") {
+                    if (typeof value === "function") {
 
                         // creates an optionsObj to pass in function for destruture
                         // avoids having to use order of function arguments
-                        let optionsObj = { value, docsDir, outputFileName }
+                        let optionsObj = { inputFileNames, docsDir, outputFileName }
                         // gets the method
-                        let method = pandocMap[key]
+                        let method = value
                         // passes the option's value for that method
                         let methodResult = method(optionsObj)
                         // split the result into an array separated by spaces
-                        let strArr = methodResult.split(/s+/)
+                        let strArr = methodResult.split(/\s+/)
                         // push the returned string to the the pandoc array  
                         pandocArray.push(strArr)
                     }
-                    else {
+                    else  if (typeof value === "string") {
+
                         // split the result into an array separated by spaces
-                        let strArr = pandocMap[key].split(/s+/)
+                        let strArr = value.split(/\s+/)
                         // push the returned string to the the pandoc array  
                         pandocArray.push(strArr)
                     }

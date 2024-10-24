@@ -14,6 +14,7 @@ let bookList = {
         inputStructure: "customUrls",
 
         preset: presets["web"],
+        
         outputFolder: `${homedir()}/Documents/dist-books/testUrls`,
         outputFileName: "pandoc",
         outputType: "html",
