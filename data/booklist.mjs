@@ -1,6 +1,7 @@
 
 import { homedir } from 'node:os';
 import { tocData } from "./data/toc-data.mjs";
+import { presets } from "./data/pandoc-data.mjs";
 
 
 export { bookList }
@@ -12,7 +13,7 @@ let bookList = {
         inputFiles: tocData["testUrls"],
         inputStructure: "customUrls",
 
-        preset: "web",
+        preset: presets["web"],
         outputFolder: `${homedir()}/Documents/dist-books/testUrls`,
         outputFileName: "pandoc",
         outputType: "html",

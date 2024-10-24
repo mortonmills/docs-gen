@@ -2,7 +2,7 @@ export { presets, optionsArray }
 
 import { homedir } from "node:os"
 import path from "node:path"
-
+import { isObject } from "../node/docs-list-util.mjs"
 
 
 
@@ -20,6 +20,13 @@ let presets = {
         "split-level": 2,
         standalone: true,
     },
+
+    "arr": [`
+--toc
+--embed-resources
+--no-highlight
+--standalone`
+    ],
     "craft-int": {
         toc: true,
         "embed-resources": true,
@@ -49,7 +56,7 @@ let presets = {
     },
 }
 
-
+// thisobject is needed for folder renders
 let pandocMap = {
     "toc": "--toc",
     "embed-resources": "--embed-resources",
@@ -87,39 +94,55 @@ function optionsArray(inputFileNames, docsDir, outputFileName) {
     let pandocArray = []
     // this has the selected options for the book
     // pandocData[espeak-ng][html].pandocOptions
-    let bookOptions = presets[docsDir.preset]
-    if (bookOptions) {
-        // this searches through the rendering options for that book
-        for (const key in bookOptions) {
-            const value = bookOptions[key];
-            // if the options has a truthy value, 
-            // then push the string version to the options array   
-            // both arrays and strings are pushed and array will be flattened  
-            if (value) {
-                if (typeof pandocMap[key] === "function") {
+    // there should be a default preset used, optional chaining is there if code is moved
+    let renderOptions = docsDir?.preset
+    if (renderOptions) {
 
-                    // creates an optionsObj to pass in function for destruture
-                    // avoids having to use order of function arguments
-                    let optionsObj = { value, docsDir, outputFileName }
-                    // gets the method
-                    let method = pandocMap[key]
-                    // passes the option's value for that method
-                    let methodResult = method(optionsObj)
-                    // split the result into an array separated by spaces
-                    let strArr = methodResult.split(/ +/)
-                    // push the returned string to the the pandoc array  
-                    pandocArray.push(strArr)
-                }
-                else {
-                    // split the result into an array separated by spaces
-                    let strArr = pandocMap[key].split(/ +/)
-                    // push the returned string to the the pandoc array  
-                    pandocArray.push(strArr)
-                }
+        if (Array.isArray(renderOptions)) {
+            pandocArray = renderOptions.map(optionString => {
+                optionString
+                    .split(/\s+/)
+                    .filter(x => x)
+            })
 
+        }
+
+        else if (isObject(renderOptions)) {
+
+            // this searches through the rendering options for that book
+            for (const key in renderOptions) {
+                const value = renderOptions[key];
+                // if the options has a truthy value, 
+                // then push the string version to the options array   
+                // both arrays and strings are pushed and array will be flattened  
+                if (value) {
+                    if (typeof pandocMap[key] === "function") {
+
+                        // creates an optionsObj to pass in function for destruture
+                        // avoids having to use order of function arguments
+                        let optionsObj = { value, docsDir, outputFileName }
+                        // gets the method
+                        let method = pandocMap[key]
+                        // passes the option's value for that method
+                        let methodResult = method(optionsObj)
+                        // split the result into an array separated by spaces
+                        let strArr = methodResult.split(/ +/)
+                        // push the returned string to the the pandoc array  
+                        pandocArray.push(strArr)
+                    }
+                    else {
+                        // split the result into an array separated by spaces
+                        let strArr = pandocMap[key].split(/ +/)
+                        // push the returned string to the the pandoc array  
+                        pandocArray.push(strArr)
+                    }
+
+                }
             }
         }
+
     }
+
 
     // flatten all subarrays 
     // since each value needs to be separated by spaces 

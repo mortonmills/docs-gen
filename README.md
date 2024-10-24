@@ -53,6 +53,13 @@ There are 3 ways to structure the output.
 //     fs.glob mkdir.recursive readdir realpath 
 //         remove.recursive watch save process create write stream and stat 
 
+## Rendering Options
+presets can either be an object or array of strings representing pandoc arguments
+the strings will be separated and split by spaces
+
+
+## Structuring Options
+
 
 ## Options
 

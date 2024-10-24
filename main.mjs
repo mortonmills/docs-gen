@@ -2,6 +2,7 @@ import { bookList } from "./data/booklist.mjs"
 
 import { docsGen } from "./docs-gen.mjs";
 import { tocData } from "./data/toc-data.mjs";
+import { presets } from "./data/pandoc-data.mjs";
 
 import { homedir } from 'node:os';
 
@@ -16,12 +17,12 @@ docsList = [
 
 let zm = {
     inputFolder: `${homedir()}/Documents/repo-books/pandoc-main`,
+    inputFiles: ["filepath1\nfilepath2\nfilepath3\nfilepath4", tocData[pandoc]],
     inputStructure: "full",
     inputType: [".md", ".txt"],
     recursive: true,
-    inputFiles: ["filepath1\nfilepath2\nfilepath3\nfilepath4", tocData[pandoc]],
 
-    preset: "embed",
+    preset: presets["embed"],
     outputFolder: `${homedir()}/Documents/dist-books/testOut`,
     outputFileName: "pandoc",
     outputType: "html",
