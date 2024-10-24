@@ -1,5 +1,7 @@
 
 import { spawnSync } from "node:child_process"
+import { isObject } from "../node/docs-list-util.mjs"
+
 
 export { pandocRender }
 

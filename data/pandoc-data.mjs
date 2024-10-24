@@ -2,7 +2,6 @@ export { presets, optionsArray }
 
 import { homedir } from "node:os"
 import path from "node:path"
-import { isObject } from "../node/docs-list-util.mjs"
 
 
 

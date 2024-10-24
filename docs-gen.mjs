@@ -5,12 +5,12 @@ import path from 'node:path';
 
 import { docsListPrep, filesStructure, folderStructure } from "./node/docs-list-util.mjs"
 
-import { renderFullDir } from "./node/folder/render-full-dir.mjs"
-import { renderSubDir } from "./node/folder/render-sub-dir.mjs"
-import { renderFilesDir } from "./node/folder/render-files-dir.mjs"
+import { renderFullDir } from "./node/folder/full-folder.mjs"
+import { renderSubDir } from "./node/folder/sub-folder.mjs"
+import { renderFilesDir } from "./node/folder/files-folder.mjs"
 
-import { renderSubFiles } from "./node/files/render-sub-files.mjs"
-import { renderFullFiles } from "./node/files/render-full-files``.mjs"
+import { renderSubFiles } from "./node/files/sub-files.mjs"
+import { renderFullFiles } from "./node/files/full-files``.mjs"
 
 export { docsGen }
 

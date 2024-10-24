@@ -1,7 +1,4 @@
 
-
-setup pandoc preset and docsList
-
 add to and from for options
 
 list resource path as array and convert for pandoc

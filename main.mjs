@@ -1,4 +1,4 @@
-import { bookList } from "./data/booklist.mjs"
+import { bookList } from "./data/docs-list.mjs"
 
 import { docsGen } from "./docs-gen.mjs";
 import { tocData } from "./data/toc-data.mjs";
