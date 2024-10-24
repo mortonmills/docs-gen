@@ -41,7 +41,7 @@ function optionsArray(inputFileNames, docsDir, outputFileName) {
         // preset arrays can have both strings and objects
         if (Array.isArray(renderOptions)) {
             pandocArray = renderOptions.map(option => {
-                isObject(option)
+                return isObject(option)
                     ? evalPresetObj(option, fileNamesObj)
                     : option
                         .split(/\s+/)
@@ -59,7 +59,7 @@ function optionsArray(inputFileNames, docsDir, outputFileName) {
     // flatten all subarrays 
     // since each value needs to be separated by spaces 
     // for node child process
-    pandocArray = pandocArray.flat()
+    pandocArray = pandocArray.flat(2)
 
     // docsDir.outputFileName
     // let title = path.parse(outputFileName)

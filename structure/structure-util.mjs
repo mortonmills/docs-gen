@@ -79,7 +79,7 @@ function docsListPrep(docsList) {
             {
                 title: ({ outputFileName }) => {
                     let title = path.parse(outputFileName);
-                    return `--metadata title=${path.parse(title.name)}`
+                    return `--metadata title=${title.name}`
                 }
             }
         ]

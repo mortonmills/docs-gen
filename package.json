@@ -8,9 +8,5 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "pandoc-filter": "^2.2.0",
-    "readability-cli": "^2.4.5"
-  }
+  "license": "ISC"
 }
