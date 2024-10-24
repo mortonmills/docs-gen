@@ -126,13 +126,13 @@ function optionsArray(inputFileNames, docsDir, outputFileName) {
                         // passes the option's value for that method
                         let methodResult = method(optionsObj)
                         // split the result into an array separated by spaces
-                        let strArr = methodResult.split(/ +/)
+                        let strArr = methodResult.split(/s+/)
                         // push the returned string to the the pandoc array  
                         pandocArray.push(strArr)
                     }
                     else {
                         // split the result into an array separated by spaces
-                        let strArr = pandocMap[key].split(/ +/)
+                        let strArr = pandocMap[key].split(/s+/)
                         // push the returned string to the the pandoc array  
                         pandocArray.push(strArr)
                     }
