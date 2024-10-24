@@ -21,6 +21,9 @@ function renderFullFiles(docsDir) {
             //                    /home/books-dist/ bookname.  html
             let outputFileName = `${docsDir.outputFolder}/${outputName}.${docsDir.outputType}`
 
+            // this is needed since optionArray spreads into listArgs
+            inputFileName = [inputFileName]
+
             pandocRender(inputFileName, docsDir, outputFileName)
 
         });
@@ -76,16 +79,19 @@ function genInputFileNames(docsDir) {
 
 function convertOutputFileName(inputFileName) {
 
-    let testurl = new URL(`${inputFileName}`)
-    let pathName = testurl.pathname
-    // let parsedPath = path.parse(pathName)
-    let outputFileName = pathName.split("/").filter(el => el)
-    let nameIndex = outputFileName.length
-    outputFileName =
-        outputFileName[nameIndex - 2]
-            ? outputFileName[nameIndex - 2] + "-" + outputFileName[nameIndex - 1]
-            : outputFileName[nameIndex - 1]
-                .join("-")
+    // let testurl = new URL(`file://${inputFileName}`)
+    // let pathName = testurl.pathname
+    // // let parsedPath = path.parse(pathName)
+    // let outputFileName = pathName.split("/").filter(el => el)
+    // let nameIndex = outputFileName.length
+    // outputFileName =
+    //     outputFileName[nameIndex - 2]
+    //         ? outputFileName[nameIndex - 2] + "-" + outputFileName[nameIndex - 1]
+    //         : outputFileName[nameIndex - 1]
+    //             .join("-")
+
+    let outputFileName = inputFileName.split("/").filter(el => el).join("-")
+
 
     return outputFileName
 

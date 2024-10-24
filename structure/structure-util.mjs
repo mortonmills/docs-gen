@@ -1,6 +1,7 @@
 
 import { readdirSync, mkdirSync, existsSync } from 'node:fs';
 import path from 'node:path';
+import fs from 'node:fs';
 
 export {
     docsListPrep,
@@ -16,7 +17,7 @@ export {
 
 
 let filesStructure = ["fullfiles", "subfiles", "filesfiles",]
-let folderStructure = ["fulldir", "subdir", "filesdir",]
+let folderStructure = ["fullfolder", "subfolder", "filesfolder",]
 
 
 function docsListPrep(docsList) {
@@ -54,7 +55,7 @@ function docsListPrep(docsList) {
         }
 
 
-        // fullpath is needed for other functions, subDir needs for treating top level dir as subdir 
+        // fullpath is needed for other functions, subDir needs for treating top level folder as subdir 
         docsDir.fullPath = docsDir.inputFolder
 
 
@@ -65,14 +66,25 @@ function docsListPrep(docsList) {
 
 
 
-        // outputFolder, dist in the current dir,
+        // outputFolder, dist in the current folder,
         docsDir.outputFolder = docsDir.outputFolder ?? path.resolve(`./dist`)
         // outputFileName, same name as inputFolder
         docsDir.outputFileName = docsDir.outputFileName ?? `${docsDir.inputFolder.split(path.sep).join("-")}`
         // outputType, html
         docsDir.outputType = docsDir.outputType ?? "html"
+
+
+        let presetDefault = [
+            `--toc --split-level=2 --standalone`,
+            {
+                title: ({ outputFileName }) => {
+                    let title = path.parse(outputFileName);
+                    return `--metadata title=${path.parse(title.name)}`
+                }
+            }
+        ]
         // preset, basic, 
-        docsDir.preset = docsDir.preset ?? "basic"
+        docsDir.preset = docsDir.preset ?? presetDefault
 
         docsList2.push(docsDir)
 
@@ -132,9 +144,9 @@ function showDirFilesList(docsList) {
 
 
         // this is for gathering the tocData not used in main function
-        // gets all contents in current dir
+        // gets all contents in current folder
         let docsDirContents = readdirSync(docsDir.inputFolder, options)
-        // sets up full paths, needed for generating file and dir books 
+        // sets up full paths, needed for generating file and folder books 
         docsDirContents.forEach(file => file.fullPath = path.join(file.parentPath, file.name))
 
         // console.log(

@@ -1,10 +1,11 @@
 
-add to and from for options
-
-list resource path as array and convert for pandoc
-
+rename dir to folders
 test all inputStructures 
 test install of repo as package
+
+add to and from for options
+list resource path as array and convert for pandoc
+
 
 TODO LOW PRIORITY
 

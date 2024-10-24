@@ -22,7 +22,7 @@ function docsGen(docsList) {
 
     // this is for gathering the tocData not used in main function
     // showDirFilesList(docsList)
-    throw new Error("stop")
+
 
     // next stage is to render according to options in docsList docsDir
     for (const docsDir of docsList) {
@@ -49,9 +49,9 @@ function docsGen(docsList) {
             // sets up full paths, needed for generating file and dir books 
             docsDirContents.forEach(file => file.fullPath = path.join(file.parentPath, file.name))
 
-            if (docsDir.inputStructure === "fulldir") { renderFullDir(docsDir, docsDirContents) }
-            else if (docsDir.inputStructure === "subdir") { renderSubDir(docsDir, docsDirContents) }
-            else if (docsDir.inputStructure === "filesdir") { renderFilesDir(docsDir, docsDirContents) }
+            if (docsDir.inputStructure === "fullfolder") { renderFullDir(docsDir, docsDirContents) }
+            else if (docsDir.inputStructure === "subfolder") { renderSubDir(docsDir, docsDirContents) }
+            else if (docsDir.inputStructure === "filesfolder") { renderFilesDir(docsDir, docsDirContents) }
         }
 
     }
