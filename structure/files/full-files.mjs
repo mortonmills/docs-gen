@@ -20,6 +20,12 @@ function renderFullFiles(docsDir) {
             // this renames the file for the outputFileName
             let outputName = convertOutputFileName(inputFileName)
             //                    /home/books-dist/ bookname.  html
+            // if an output filename is given, will default to using that
+            // this is typically used in single file renders
+            outputName =
+                docsDir.outputFileName
+                    ? docsDir.outputFileName
+                    : outputName
             let outputFileName = `${docsDir.outputFolder}/${outputName}.${docsDir.outputType}`
 
             // this is needed since optionArray spreads into listArgs
