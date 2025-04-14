@@ -41,10 +41,16 @@ There are 2 ways to generate docs
 
 A path to a folder can be given and files within that folder will be converted.
 A list of files can also been given, either as an array or object (also called the **"toc"**)
-There are 3 ways to structure the output.
-- full - the entire folder will be one document
-- sub dir - each sub folder will be one document including the top level folder
-- files - each file will be one document
+
+
+There are 6 ways to structure the output.
+- fullfolder - the entire folder will be one document
+- subfolder - each sub folder will be one document (the top level folder will also become one document)
+- filesfolder - each file will be one document
+- 
+- fullfiles - the entire list of files will be one document
+- subfiles - each key in the toc object will be one document  
+- filesfiles - each file in the list will be a document
 
 // node api
 //     os freemem totalmem homedir userinfo tmpdir

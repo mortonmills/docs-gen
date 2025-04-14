@@ -1,4 +1,19 @@
 
+
+add warnings and errors for missing paths and failed renders
+add error check for files of same name within in current files groups
+
+fix output file name default when using filesfiles
+during default prep the outfilename is given a default
+this gets used in filesfiles and always resolves to true since a default is given
+this does not allow custom file output names for multiple files
+
+
+add mirror structure for folder
+
+mirrorfolder
+this will create a copy of the folder structure will all of the files converted
+
 rename dir to folders
 test all inputStructures 
 test install of repo as package

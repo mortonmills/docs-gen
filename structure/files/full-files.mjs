@@ -27,6 +27,7 @@ function renderFullFiles(docsDir) {
                     ? docsDir.outputFileName
                     : outputName
             let outputFileName = `${docsDir.outputFolder}/${outputName}.${docsDir.outputType}`
+            // let outputFileName = `${inputFileName}.${docsDir.outputType}`
 
             // this is needed since optionArray spreads into listArgs
             inputFileName = [inputFileName]

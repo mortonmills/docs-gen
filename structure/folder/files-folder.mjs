@@ -36,15 +36,17 @@ function renderFilesDir(docsDir, docsDirContents) {
 
 
         // names can be very long like this, need to fix
-        let bookName = bookFile.fullPath
-            // .slice(indexOfPathStart)
-            .split(path.sep)
-            .join("-")
+        // let bookName = bookFile.fullPath
+        //     .split(path.sep)
+        //     .join("-")
+
+        let { name: bookName } = path.parse(bookFile.fullPath)
 
         // setup key specific options here
         // since "files" option is a single value, 
         // needs to be set as an array to work with function 
         let inputFileNames = [bookFile.fullPath]
+        // let outputFileName = `${docsDir.outputFolder}/${bookName}.${docsDir.outputType}`
         let outputFileName = `${docsDir.outputFolder}/${bookName}.${docsDir.outputType}`
 
         pandocRender(inputFileNames, docsDir, outputFileName)
