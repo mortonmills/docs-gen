@@ -43,9 +43,12 @@ function optionsArray(inputFileNames, docsDir, outputFileName) {
             pandocArray = renderOptions.map(option => {
                 return isObject(option)
                     ? evalPresetObj(option, fileNamesObj)
-                    : option
-                        .split(/\s+/)
-                        .filter(x => x)
+                    : typeof option === "string"
+                        ? option
+                            .split(/\s+/)
+                            .filter(x => x)
+                        // the final way if using an array
+                        : option
             })
 
         }

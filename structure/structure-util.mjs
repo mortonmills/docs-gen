@@ -69,7 +69,10 @@ function docsListPrep(docsList) {
         // outputFolder, dist in the current folder,
         docsDir.outputFolder = docsDir.outputFolder ?? path.resolve(`./dist`)
         // outputFileName, same name as inputFolder
-        docsDir.outputFileName = docsDir.outputFileName ?? `${docsDir.inputFolder.split(path.sep).join("-")}`
+        docsDir.outputFileName = docsDir.inputStructure === "filesfiles"
+            // filesfiles option will give priority the name of the input
+            ? undefined
+            : docsDir.outputFileName ?? `${docsDir.inputFolder.split(path.sep).join("-")}`
         // outputType, html
         docsDir.outputType = docsDir.outputType ?? "html"
 
