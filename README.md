@@ -64,7 +64,7 @@ presets can either be an object or array of strings representing pandoc argument
 the strings will be separated and split by spaces
 
 
-If the value of a key a is a function, 
+If the value of a key is a function, 
 then another object containing the inputFileNames, docsDir, and outfileName will passed to that function.
 Otherwise the value should be a String.
 

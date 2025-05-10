@@ -1,12 +1,16 @@
 {
-  "name": "docs-gen",
-  "version": "1.0.0",
+  "name": "@mortonmills/docs-gen",
+  "version": "0.0.0",
   "description": "The docs-gen repo is a document generator which uses nodejs to structure files and pandoc to render them.",
   "main": "index.mjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mortonmills/docs-gen.git"
+  },
   "keywords": [],
-  "author": "",
+  "author": "mortonmills",
   "license": "ISC"
 }
